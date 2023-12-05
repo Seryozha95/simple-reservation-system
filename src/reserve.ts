@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { messages } from './utils/constants';
 import mongoose, { ClientSession } from 'mongoose';
 
-const createAndSendReservation = async (userId: string, utcdateTime: Date, tableNumber: number, session: ClientSession, res: Response) => {
+const createAndSendReservation = async (userId: number, utcdateTime: Date, tableNumber: number, session: ClientSession, res: Response) => {
     try {
         const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber });
         await newReservation.save({ session });
@@ -58,7 +58,6 @@ export default async (req: Request, res: Response): Promise<void> => {
             res.json(newReservation);
             return;
         }
-
         const alreadyReservedByUser = existingReservations.some(reserv => reserv.userId === userId);
 
         if (alreadyReservedByUser) {
