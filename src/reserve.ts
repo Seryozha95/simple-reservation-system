@@ -44,10 +44,10 @@ export default async (req: Request, res: Response): Promise<void> => {
     try {
         const { userId, dateTime, tableNumber } = req.body;
 
-        const utcdateTime = new Date(dateTime);
+        const utcdateTime = new Date(new Date(dateTime).setMinutes(0, 0, 0));
 
         session = await mongoose.startSession();
-        session.startTransaction();
+        await session.startTransaction();
 
         const [reservation, reservationPrevious] = await findReservations(utcdateTime, tableNumber, session);
 
