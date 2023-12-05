@@ -45,12 +45,13 @@ Enjoy using the Simple Reservation System!
 # How to run
 
 ### Setup a mongo db
-- docker compose up --build -d
+```
+docker compose up --build -d
+```
 
 ### Build and Run server
 ```
 npm install
-
 ``` 
 
 ```
@@ -64,9 +65,9 @@ npm run start
 
 # How to test
 
-By default the app will run on 3000 post and will have `reserve` endpoint
+By default the app will run on 3000 port and will have `reserve` endpoint
 
-you can use the following curm to test
+you can use the following curl to test
 
 ```
 curl --location 'localhost:3000/reserve' \
