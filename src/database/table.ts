@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { messages } from '../utils/constants';
 
 interface Table {
     tableNumber: number
@@ -28,13 +29,12 @@ const insertDefaultTables = async (): Promise<void> => {
             if (!existingTable) {
                 const newUser = new TableModel(table);
                 await newUser.save();
-                console.log(`Table "${table.tableNumber}" inserted.`);
+                console.log(messages.local.defaultTableInitiated,  table.tableNumber);
             } else {
-                console.log(`Table "${table.tableNumber}" already exists.`);
+                console.log(messages.local.defaultTableAlreadyExists,  table.tableNumber);
             }
         }
     } catch (error) {
-        console.error('Error inserting default tables:', error);
         throw error;
     }
 };

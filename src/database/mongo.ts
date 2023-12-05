@@ -1,4 +1,5 @@
 import mongoose, { Connection } from 'mongoose';
+import { messages } from '../utils/constants';
 
 const connectToMongo = async (): Promise<Connection> => {
   try {
@@ -6,10 +7,10 @@ const connectToMongo = async (): Promise<Connection> => {
 
     const connection = await mongoose.connect(mongoUri);
 
-    console.log('Connected to MongoDB');
+    console.log(messages.local.successDbConnect);
     return connection.connection;
   } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+    console.log(messages.local.errorDbConnect, error);
     throw error;
   }
 };

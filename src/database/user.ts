@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { messages } from '../utils/constants';
 
 interface User {
     username: string;
@@ -41,13 +42,12 @@ const insertDefaultUsers = async (): Promise<void> => {
             if (!existingUser) {
                 const newUser = new UserModel(user);
                 await newUser.save();
-                console.log(`User "${user.username}" inserted.`);
+                console.log(messages.local.defaultUserInitiated,  user.username);
             } else {
-                console.log(`User "${user.username}" already exists.`);
+                console.log(messages.local.defaultUserAlreadyExists,  user.username);
             }
         }
     } catch (error) {
-        console.error('Error inserting default users:', error);
         throw error;
     }
 };
