@@ -6,7 +6,7 @@ import mongoose, { ClientSession } from 'mongoose';
 
 const createAndSendReservation = async (userId: string, utcdateTime: Date, tableNumber: number, session: ClientSession, res: Response) => {
     try {
-        const newReservation = new ReservationModel({ userIds: userId, dateTime: utcdateTime, tableNumber });
+        const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber });
         await newReservation.save({ session });
         await session.commitTransaction();
         session.endSession();
@@ -59,7 +59,7 @@ export default async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const alreadyReservedByUser = existingReservations.some(reserv => reserv.userIds === userId);
+        const alreadyReservedByUser = existingReservations.some(reserv => reserv.userId === userId);
 
         if (alreadyReservedByUser) {
             res.status(400).json({ message: messages.response.error.userAlreadyHasReservation });

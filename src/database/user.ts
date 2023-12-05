@@ -3,11 +3,14 @@ import mongoose, { Schema } from 'mongoose';
 interface User {
     username: string;
     email: string;
+    //added this for easy testing
+    userId: number
 }
 
 const userSchema: Schema = new Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
+    userId: { type: Number, required: true, unique: true },
 });
 
 const UserModel = mongoose.model<User>('user', userSchema);
@@ -17,15 +20,18 @@ const insertDefaultUsers = async (): Promise<void> => {
         const defaultUsers: User[] = [
             {
                 username: 'admin',
-                email: 'admin@example.com'
+                email: 'admin@example.com',
+                userId: 1
             },
             {
                 username: 'john_doe',
                 email: 'john.doe@example.com',
+                userId: 2
             },
             {
                 username: 'ser_kh',
                 email: 'ser.doe@example.com',
+                userId: 3
             },
         ];
 

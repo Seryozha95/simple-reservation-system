@@ -10,7 +10,7 @@ const isValidDate = (dateString: string): boolean => {
 };
 
 const validateRequestBody = [
-    body('userId').isString().notEmpty(),
+    body('userId').isNumeric(),
     body('tableNumber').isNumeric(),
     body('dateTime').custom((value) => {
         if (!isValidDate(value)) {
@@ -30,7 +30,7 @@ export default async (req: Request, res: Response, next: Function) => {
 
     const { userId, tableNumber } = req.body;
 
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findOne({ userId });
     if (!user) {
         return res.status(404).json({ message: messages.response.error.userNotFound });
     }

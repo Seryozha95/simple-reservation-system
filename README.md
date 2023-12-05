@@ -75,7 +75,7 @@ curl --location 'localhost:3000/reserve' \
 --header 'Content-Type: application/json' \
 --data '{
     "tableNumber":1,
-    "userId": "656f725eab404d4af4f3a24d",
+    "userId": 1,
     "dateTime": "Tue Dec 05 2023 23:00:08 GMT+0300"
 }'
 ```

@@ -2,13 +2,13 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 interface ReservationInterface extends Document {
     dateTime: Date
-    userIds: string;
+    userId: string;
     tableNumber: number
 }
 
 const reservationSchema: Schema = new Schema({
     dateTime: { type: Date, required: true},
-    userIds: { type: String, required: true },
+    userId: { type: String, required: true },
     tableNumber: {type: Number, required: true}
 });
 
