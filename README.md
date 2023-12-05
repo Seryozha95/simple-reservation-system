@@ -50,9 +50,19 @@ Enjoy using the Simple Reservation System!
 - docker compose up --build -d
 
 ### Build and Run server
-- npm install
-- npm run build
-- npm run start
+```
+npm install
+
+``` 
+
+```
+npm run build
+``` 
+
+```
+npm run start
+
+``` 
 
 # How to test
 
