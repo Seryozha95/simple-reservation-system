@@ -40,8 +40,6 @@ The goal of this reservation system is to provide a mechanism for reserving the 
 - User registration is not mandatory; users can be hardcoded for simplicity.
 - Time zone considerations are essential, as users may be in different time zones.
 
-Feel free to explore and modify the code to fit your specific requirements. If you encounter any issues or have questions, please check the project's [issue tracker](link-to-issue-tracker) or create a new issue.
-
 Enjoy using the Simple Reservation System!
 
 # How to run
