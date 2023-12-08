@@ -42,7 +42,12 @@ The goal of this reservation system is to provide a mechanism for reserving the 
 
 Enjoy using the Simple Reservation System!
 
-# How to run
+# How to run Backend
+
+### Go to server folder
+```
+cd server
+```
 
 ### Setup a mongo db
 ```
@@ -63,14 +68,34 @@ npm run start
 
 ``` 
 
+If you want to run un dev mode
+
+```
+npm run dev
+
+``` 
+
+# How to run Frontend
+
+```
+npm install
+``` 
+
+
+```
+npm run start
+
+``` 
+
+
 # How to test
 
-By default the app will run on 3000 port and will have `reserve` endpoint
+By default the app will run on 5000 port and will have `reserve` endpoint
 
 you can use the following curl to test
 
 ```
-curl --location 'localhost:3000/reserve' \
+curl --location 'localhost:5000/reserve' \
 --header 'Content-Type: application/json' \
 --data '{
     "tableNumber":1,

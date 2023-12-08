@@ -4,7 +4,7 @@ import { insertDefaultTables } from './database/table';
 import { insertDefaultUsers } from './database/user';
 import { messages } from './utils/constants';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 connectToMongo()
   .then(() => Promise.all([insertDefaultUsers(), insertDefaultTables()]))
