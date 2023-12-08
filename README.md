@@ -78,6 +78,10 @@ npm run dev
 # How to run Frontend
 
 ```
+cd client
+``` 
+
+```
 npm install
 ``` 
 
