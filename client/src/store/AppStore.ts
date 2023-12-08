@@ -1,6 +1,8 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { IEventInfo } from '../components/EventCalendar';
 
+// TODO move to env
+// TODO create come constants file
 const API_BASE_URL = 'http://localhost:5000';
 
 class AppStore {

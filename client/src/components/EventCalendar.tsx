@@ -17,6 +17,7 @@ import AddEventModal from "./AddEventModal"
 import store from '../store/AppStore'
 import { observer } from "mobx-react-lite"
 
+// TODO take from chrome settings
 const locales = {
   "en-US": enUS,
 }
@@ -28,7 +29,7 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 })
-
+ 
 export interface IEventInfo extends Event {
   _id: string
   description: string
