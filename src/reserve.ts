@@ -3,10 +3,11 @@ import moment from 'moment-timezone';
 import { Request, Response } from 'express';
 import { messages } from './utils/constants';
 import mongoose, { ClientSession } from 'mongoose';
+import findTimeSlots from './utils/findSlots';
 
 const createAndSendReservation = async (userId: number, utcdateTime: Date, tableNumber: number, session: ClientSession, res: Response) => {
     try {
-        const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber });
+        const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber, endTime: moment(utcdateTime).add(3, 'hours').toDate() });
         await newReservation.save({ session });
         await session.commitTransaction();
         session.endSession();
@@ -19,8 +20,8 @@ const createAndSendReservation = async (userId: number, utcdateTime: Date, table
     }
 };
 
-const sendResponse = (res: Response, status: number, message: ReservationInterface | string): void => {
-    res.status(status).json({ message });
+const sendResponse = (res: Response, status: number, message: ReservationInterface | ReservationInterface[] | string): void => {
+    res.status(status).json(message);
 };
 
 const findReservations = async (
@@ -39,7 +40,45 @@ const findReservations = async (
     return reservations;
 };
 
-export default async (req: Request, res: Response): Promise<void> => {
+
+// TODO add time period
+const getReservedSlotsByUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { userId } = req.params;
+        const reservations: ReservationInterface[] = await ReservationModel.find({
+            userId
+        }).select('dateTime').select('endTime')
+
+        sendResponse(res, 200, reservations);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: messages.local.internalServerError });
+    }
+};
+
+// Endpoint for getting reservations within a time range
+const getReservedSlots = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { startTime, endTime } = req.query;
+
+        // Check if both start and end times are provided
+        if (!startTime || !endTime) {
+            // res.status(400).json({ message: 'Both startTime and endTime are required in the query parameters' });
+            // return
+        }
+
+        const reservations: ReservationInterface[] = await ReservationModel.find({
+            // dateTime: { $gte: new Date(+startTime), $lt: new Date(+endTime) },
+        });
+
+        res.status(200).json(findTimeSlots(reservations))
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+const reserve = async (req: Request, res: Response): Promise<void> => {
     let session: ClientSession | null = null;
     try {
         const { userId, dateTime, tableNumber } = req.body;
@@ -79,3 +118,8 @@ export default async (req: Request, res: Response): Promise<void> => {
         session?.endSession();
     }
 };
+export {
+    reserve,
+    getReservedSlots,
+    getReservedSlotsByUser
+}
