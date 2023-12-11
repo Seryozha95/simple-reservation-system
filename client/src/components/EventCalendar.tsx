@@ -29,7 +29,7 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 })
- 
+
 export interface IEventInfo extends Event {
   _id: string
   description: string
@@ -84,7 +84,8 @@ const EventCalendar = observer(() => {
     }
     console.log('data is ==', data)
     if (currentEvent?.start && currentEvent?.end) {
-      store.reserve(currentEvent?.start, currentEvent?.end, 1)
+      // TODO
+      store.reserve(currentEvent?.start, store.userId)
 
     }
     handleClose()
@@ -92,7 +93,7 @@ const EventCalendar = observer(() => {
 
   useEffect(() => {
     // Call the fetchData method during component mount
-    store.fetchData();
+    store.initiate();
   }, []);
 
   return (

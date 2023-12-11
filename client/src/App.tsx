@@ -1,8 +1,12 @@
 import EventCalendar from "./components/EventCalendar"
+import UserIdentifier from "./components/UserIdentifier"
 
 function App() {
   return (
-    <EventCalendar />
+    <>
+      <UserIdentifier />
+      <EventCalendar />
+    </>
   )
 }
 

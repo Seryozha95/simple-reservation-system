@@ -8,12 +8,23 @@ const API_BASE_URL = 'http://localhost:5000';
 class AppStore {
     myReservations: IEventInfo[] = [];
     alreadyReservedSlots: IEventInfo[] = [];
+    userId: number = 1
+    isLoading: boolean = false
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    async reserve(start: Date, end: Date, userId: number) {
+    setUserId(userId: number) {
+        runInAction(() => {
+            this.userId = userId
+            this.isLoading = true
+        })
+        this.initiate()
+
+    }
+
+    async reserve(start: Date, userId: number) {
         try {
             const postData = {
                 dateTime: start,
@@ -42,15 +53,17 @@ class AppStore {
                     },
                     ...this.myReservations
                 ];
+                this.isLoading = false;
             });
         } catch (error) {
             console.error('Error reserving slot:', error);
         }
     }
 
-    async fetchData() {
+    async initiate() {
         try {
-            const result = await this.fetchEventData('/reservedSlots/1');
+            // TODO remove hard coded strings
+            const result = await this.fetchEventData(`/reservedSlots/${this.userId}`);
             const result1 = await this.fetchEventData('/fullReservedSlots');
 
             runInAction(() => {
