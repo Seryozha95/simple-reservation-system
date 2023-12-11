@@ -12,12 +12,14 @@ type ERROR = {
 class AppStore {
     myReservations: IEventInfo[] = [];
     alreadyReservedSlots: IEventInfo[] = [];
-    userId: number = 1;
+    userId: number = Number(localStorage.getItem('userId')) || 2;
     isLoading: boolean = false;
     hasError: string | null = null;
 
+
     constructor() {
         makeAutoObservable(this);
+
     }
 
     setUserId(userId: number) {
@@ -25,6 +27,7 @@ class AppStore {
             this.userId = userId
             this.isLoading = true
         })
+        localStorage.setItem('userId', userId.toString())
         this.initiate()
 
     }

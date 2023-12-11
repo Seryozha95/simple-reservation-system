@@ -6,8 +6,9 @@ import {
   Radio,
 } from "@mui/material"
 import store from '../store/AppStore'
+import { observer } from "mobx-react-lite"
 
-const UserIdentifier = () => {
+const UserIdentifier = observer(() => {
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">Choose user</FormLabel>
@@ -18,12 +19,12 @@ const UserIdentifier = () => {
         row
         onChange={(e) => store.setUserId(+e.target.value)}
       >
-        <FormControlLabel value={1} control={<Radio />} label="User 1" />
-        <FormControlLabel value={2} control={<Radio />} label="User 2" />
-        <FormControlLabel value={3} control={<Radio />} label="User 3" />
+        <FormControlLabel value={1} control={<Radio />} checked={store.userId ===1} label="User 1" />
+        <FormControlLabel value={2} control={<Radio />} checked={store.userId ===2} label="User 2" />
+        <FormControlLabel value={3} control={<Radio />} checked={store.userId ===3} label="User 3" />
       </RadioGroup>
     </FormControl>
   )
-}
+})
 
 export default UserIdentifier
