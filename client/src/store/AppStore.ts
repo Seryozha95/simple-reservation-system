@@ -5,11 +5,16 @@ import { IEventInfo } from '../components/EventCalendar';
 // TODO create come constants file
 const API_BASE_URL = 'http://localhost:5000';
 
+type ERROR = {
+    message: string
+}
+
 class AppStore {
     myReservations: IEventInfo[] = [];
     alreadyReservedSlots: IEventInfo[] = [];
-    userId: number = 1
-    isLoading: boolean = false
+    userId: number = 1;
+    isLoading: boolean = false;
+    hasError: string | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,6 +27,12 @@ class AppStore {
         })
         this.initiate()
 
+    }
+
+    handleErrorClose = () => {
+        runInAction(() => {
+            this.hasError = null
+        })
     }
 
     async reserve(start: Date, userId: number) {
@@ -41,7 +52,10 @@ class AppStore {
             });
 
             const result = await response.json();
-            console.log('myReservations', result);
+
+            if (!result.ok) {
+                throw new Error(result.message);
+            }
 
             runInAction(() => {
                 this.myReservations = [
@@ -57,6 +71,7 @@ class AppStore {
             });
         } catch (error) {
             console.error('Error reserving slot:', error);
+            this.hasError = (error as ERROR)?.message;
         }
     }
 

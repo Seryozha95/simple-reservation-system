@@ -76,13 +76,6 @@ const EventCalendar = observer(() => {
   const onAddEvent = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
-    const data: IEventInfo = {
-      ...eventFormData,
-      _id: generateId(),
-      start: currentEvent?.start,
-      end: currentEvent?.end,
-    }
-    console.log('data is ==', data)
     if (currentEvent?.start && currentEvent?.end) {
       // TODO
       store.reserve(currentEvent?.start, store.userId)
