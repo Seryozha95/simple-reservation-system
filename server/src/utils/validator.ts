@@ -11,6 +11,7 @@ const isValidDate = (dateString: string): boolean => {
 
 const validateRequestBody = [
     body('userId').isNumeric(),
+    body('description').isString(),
     body('tableNumber').isNumeric(),
     body('dateTime').custom((value) => {
         if (!isValidDate(value)) {

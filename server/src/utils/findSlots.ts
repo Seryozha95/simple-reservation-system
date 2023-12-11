@@ -37,7 +37,7 @@ export default (data: ReservationInterface[]) => {
                 // Check if the intervals overlap
                 if (currentStart <= intervalEnd) {
                     // Found an interval with at least two records
-                    result.push({ dateTime: intervalStart.toISOString(), endTime: currentEnd.toISOString() });
+                    result.push({ dateTime: intervalStart.toISOString(), endTime: currentEnd.toISOString() , description: 'Full Reserved'});
                 }
             }
         }

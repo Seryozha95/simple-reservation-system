@@ -38,12 +38,13 @@ class AppStore {
         })
     }
 
-    async reserve(start: Date, userId: number) {
+    async reserve(start: Date, description: string, userId: number) {
         try {
             const postData = {
                 dateTime: start,
                 userId,
-                tableNumber: 1
+                tableNumber: 1,
+                description
             };
 
             const response = await fetch(`${API_BASE_URL}/reserve`, {
@@ -56,7 +57,7 @@ class AppStore {
 
             const result = await response.json();
 
-            if (!result.ok) {
+            if (!response.ok) {
                 throw new Error(result.message);
             }
 
@@ -64,9 +65,9 @@ class AppStore {
                 this.myReservations = [
                     {
                         _id: result._id,
-                        start,
+                        start: new Date(result.dateTime),
                         end: new Date(result.endTime),
-                        description: 'descriptio'
+                        description: result.description
                     },
                     ...this.myReservations
                 ];
@@ -101,7 +102,7 @@ class AppStore {
             _id: item._id,
             start: new Date(item.dateTime),
             end: new Date(item.endTime),
-            description: item.description || 'asd'
+            description: item.description
         }));
     }
 }

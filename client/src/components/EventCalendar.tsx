@@ -33,18 +33,10 @@ const localizer = dateFnsLocalizer({
 export interface IEventInfo extends Event {
   _id: string
   description: string
-  todoId?: string
 }
 
 export interface EventFormData {
   description: string
-  todoId?: string
-}
-
-export interface DatePickerEventFormData {
-  description: string
-  start?: Date
-  end?: Date
 }
 
 export const generateId = () => (Math.floor(Math.random() * 10000) + 1).toString()
@@ -75,10 +67,9 @@ const EventCalendar = observer(() => {
 
   const onAddEvent = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
     if (currentEvent?.start && currentEvent?.end) {
       // TODO
-      store.reserve(currentEvent?.start, store.userId)
+      store.reserve(currentEvent?.start, eventFormData.description, store.userId)
 
     }
     handleClose()

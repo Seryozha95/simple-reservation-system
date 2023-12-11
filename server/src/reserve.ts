@@ -5,9 +5,9 @@ import { messages } from './utils/constants';
 import mongoose, { ClientSession } from 'mongoose';
 import findTimeSlots from './utils/findSlots';
 
-const createAndSendReservation = async (userId: number, utcdateTime: Date, tableNumber: number, session: ClientSession, res: Response) => {
+const createAndSendReservation = async (userId: number, utcdateTime: Date, tableNumber: number, description: string, session: ClientSession, res: Response) => {
     try {
-        const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber, endTime: moment(utcdateTime).add(3, 'hours').toDate() });
+        const newReservation = new ReservationModel({ userId, dateTime: utcdateTime, tableNumber, description, endTime: moment(utcdateTime).add(3, 'hours').toDate() });
         await newReservation.save({ session });
         await session.commitTransaction();
         session.endSession();
@@ -47,7 +47,7 @@ const getReservedSlotsByUser = async (req: Request, res: Response): Promise<void
         const { userId } = req.params;
         const reservations: ReservationInterface[] = await ReservationModel.find({
             userId
-        }).select('dateTime').select('endTime')
+        }).select('dateTime').select('endTime').select('description')
 
         sendResponse(res, 200, reservations);
     } catch (error) {
@@ -81,7 +81,7 @@ const getReservedSlots = async (req: Request, res: Response): Promise<void> => {
 const reserve = async (req: Request, res: Response): Promise<void> => {
     let session: ClientSession | null = null;
     try {
-        const { userId, dateTime, tableNumber } = req.body;
+        const { userId, dateTime, tableNumber, description } = req.body;
 
         const utcdateTime = new Date(new Date(dateTime).setMinutes(0, 0, 0));
 
@@ -93,7 +93,7 @@ const reserve = async (req: Request, res: Response): Promise<void> => {
         const existingReservations = [...reservation, ...reservationPrevious];
 
         if (!existingReservations.length) {
-            const newReservation = await createAndSendReservation(userId, utcdateTime, tableNumber, session, res)
+            const newReservation = await createAndSendReservation(userId, utcdateTime, tableNumber, description, session, res)
             res.json(newReservation);
             return;
         }
@@ -107,7 +107,7 @@ const reserve = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         else {
-            const newReservation = await createAndSendReservation(userId, utcdateTime, tableNumber, session, res);
+            const newReservation = await createAndSendReservation(userId, utcdateTime, tableNumber, description, session, res);
             res.json(newReservation);
             return;
         }
